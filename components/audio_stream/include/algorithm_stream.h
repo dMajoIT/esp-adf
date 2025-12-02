@@ -33,7 +33,7 @@ extern "C" {
 #endif
 
 #define ALGORITHM_STREAM_PINNED_TO_CORE     0
-#define ALGORITHM_STREAM_TASK_PERIOD        21
+#define ALGORITHM_STREAM_TASK_PERIOD        18
 #define ALGORITHM_STREAM_RINGBUFFER_SIZE    1024
 #define ALGORITHM_STREAM_TASK_STACK_SIZE    (8 * 1024)
 
@@ -152,7 +152,27 @@ typedef struct {
     .agc_mode = AFE_AGC_MODE_WAKENET,                                                             \
     .input_format = AUDIO_ADC_INPUT_CH_FORMAT,                                                    \
     .agc_target_level_dbfs = -3,                                                                  \
-    .enable_se = true,                                                                             \
+    .enable_se = true,                                                                            \
+    .multi_in_rb_num = false,                                                                     \
+}
+
+#define ALGORITHM_STREAM_CFG_SR_DUAL_MIC() {                                                      \
+    .input_type = ALGORITHM_STREAM_INPUT_TYPE1,                                                   \
+    .task_stack = ALGORITHM_STREAM_TASK_STACK_SIZE,                                               \
+    .task_prio  = ALGORITHM_STREAM_TASK_PERIOD,                                                   \
+    .task_core  = ALGORITHM_STREAM_PINNED_TO_CORE,                                                \
+    .out_rb_size = ALGORITHM_STREAM_RINGBUFFER_SIZE,                                              \
+    .stack_in_ext = true,                                                                         \
+    .rec_linear_factor = 1,                                                                       \
+    .ref_linear_factor = 1,                                                                       \
+    .debug_input = false,                                                                         \
+    .algo_mask = (ALGORITHM_STREAM_USE_AEC | ALGORITHM_STREAM_USE_VAD),                           \
+    .afe_type = AFE_TYPE_SR,                                                                      \
+    .partition_label = "model",                                                                   \
+    .agc_mode = AFE_AGC_MODE_WAKENET,                                                             \
+    .input_format = AUDIO_ADC_INPUT_CH_FORMAT,                                                    \
+    .agc_target_level_dbfs = -3,                                                                  \
+    .enable_se = true,                                                                            \
     .multi_in_rb_num = false,                                                                     \
 }
 

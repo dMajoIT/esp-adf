@@ -33,14 +33,44 @@ static const char *TAG = "ALGORITHM_EXAMPLES";
 
 /* Debug original input data for AEC feature*/
 // #define DEBUG_ALGO_INPUT
+/* Enable dual mic config*/
+// #define ENABLE_DUAL_MIC  /* Only for ESP32-S3-KORVO2-V3 board */
 
-#define I2S_SAMPLE_RATE     16000
-#if CONFIG_ESP_LYRAT_MINI_V1_1_BOARD || CONFIG_ESP32_S3_KORVO2L_V1_BOARD
-#define I2S_CHANNELS        I2S_CHANNEL_FMT_RIGHT_LEFT
+#ifdef CONFIG_ESP32_S3_KORVO2_V3_BOARD
+#ifdef ENABLE_DUAL_MIC
+#define ALGORITHM_STREAM_CFG()  ALGORITHM_STREAM_CFG_SR_DUAL_MIC()
+#define AEC_INPUT_FORMAT        AUDIO_ADC_INPUT_CH_FORMAT
+#define AEC_INPUT_CHANNEL       (4)
+#define RSP_DEST_CHANNELS       (2)
+#define I2S_SAMPLE_RATE         (16000)
+#define I2S_BITS                (32)
+#define I2S_CHANNELS            I2S_CHANNEL_FMT_RIGHT_LEFT
 #else
-#define I2S_CHANNELS        I2S_CHANNEL_FMT_ONLY_LEFT
-#endif
-#define I2S_BITS            CODEC_ADC_BITS_PER_SAMPLE
+#define ALGORITHM_STREAM_CFG()  ALGORITHM_STREAM_CFG_DEFAULT()
+#define AEC_INPUT_FORMAT        "RM"
+#define AEC_INPUT_CHANNEL       (2)
+#define RSP_DEST_CHANNELS       (1)  /* As the chip's CODEC_ADC_BITS_PER_SAMPLE is 32 bits (16 bits for mic + 16 bits for ref) */
+#define I2S_SAMPLE_RATE         (16000)
+#define I2S_BITS                (32)
+#define I2S_CHANNELS            I2S_CHANNEL_FMT_ONLY_LEFT
+#endif  /* ENABLE_DUAL_MIC */
+#elif CONFIG_ESP_LYRAT_MINI_V1_1_BOARD
+#define ALGORITHM_STREAM_CFG()  ALGORITHM_STREAM_CFG_DEFAULT()
+#define AEC_INPUT_FORMAT        "RM"
+#define AEC_INPUT_CHANNEL       (2)
+#define RSP_DEST_CHANNELS       (2)
+#define I2S_SAMPLE_RATE         (16000)
+#define I2S_BITS                (16)
+#define I2S_CHANNELS            I2S_CHANNEL_FMT_RIGHT_LEFT
+#else
+#define ALGORITHM_STREAM_CFG()  ALGORITHM_STREAM_CFG_DEFAULT()
+#define AEC_INPUT_FORMAT        "MR"
+#define RSP_DEST_CHANNELS       (2)
+#define AEC_INPUT_CHANNEL       (2)
+#define I2S_SAMPLE_RATE         (16000)
+#define I2S_BITS                CODEC_ADC_BITS_PER_SAMPLE
+#define I2S_CHANNELS            I2S_CHANNEL_FMT_RIGHT_LEFT
+#endif  /* CONFIG_ESP32_S3_KORVO2_V3_BOARD */
 
 /* The AEC internal buffering mechanism requires that the recording signal
    is delayed by around 0 - 10 ms compared to the corresponding reference (playback) signal. */
@@ -120,6 +150,8 @@ void app_main()
     ESP_LOGI(TAG, "[2.0] Start codec chip");
     i2s_stream_cfg_t i2s_w_cfg = I2S_STREAM_CFG_DEFAULT_WITH_PARA(I2S_NUM_0, I2S_SAMPLE_RATE, I2S_BITS, AUDIO_STREAM_WRITER);
     i2s_w_cfg.task_stack = -1;
+    i2s_w_cfg.chan_cfg.dma_desc_num = 6;
+    i2s_w_cfg.chan_cfg.dma_frame_num = 1024;
     i2s_w_cfg.need_expand = (16 != I2S_BITS);
     i2s_stream_set_channel_type(&i2s_w_cfg, I2S_CHANNELS);
     i2s_stream_writter = i2s_stream_init(&i2s_w_cfg);
@@ -127,8 +159,8 @@ void app_main()
     audio_board_handle_t board_handle = audio_board_init();
     audio_hal_ctrl_codec(board_handle->audio_hal, AUDIO_HAL_CODEC_MODE_BOTH, AUDIO_HAL_CTRL_START);
     audio_hal_set_volume(board_handle->audio_hal, 80);
-#if CONFIG_ESP32_S3_KORVO2_V3_BOARD
-    es7210_adc_set_gain(ES7210_INPUT_MIC3, GAIN_0DB);
+#ifdef CONFIG_ESP32_S3_KORVO2_V3_BOARD
+    es7210_adc_set_gain(ES7210_INPUT_MIC3, GAIN_24DB);
     es7210_adc_set_gain(ES7210_INPUT_MIC2 | ES7210_INPUT_MIC1, GAIN_33DB);
 #endif  /* CONFIG_ESP32_S3_KORVO2_V3_BOARD */
 
@@ -143,12 +175,9 @@ void app_main()
     mem_assert(pipeline_rec);
 
     ESP_LOGI(TAG, "[3.1] Create algorithm stream for aec");
-    algorithm_stream_cfg_t algo_config = ALGORITHM_STREAM_CFG_DEFAULT();
-#if CONFIG_ESP32_S3_KORVO2_V3_BOARD || CONFIG_ESP_LYRAT_MINI_V1_1_BOARD
-    algo_config.input_format = "RM";
-#elif CONFIG_ESP32_S3_KORVO2L_V1_BOARD
-    algo_config.input_format = "MR";
-#endif
+    algorithm_stream_cfg_t algo_config = ALGORITHM_STREAM_CFG();
+    algo_config.input_format = AEC_INPUT_FORMAT;
+    algo_config.task_prio = 5;
 #if !RECORD_HARDWARE_AEC
     algo_config.input_type = ALGORITHM_STREAM_INPUT_TYPE2;
 #endif
@@ -172,6 +201,8 @@ void app_main()
     ESP_LOGI(TAG, "[3.3] Create fatfs stream to write data to sdcard");
     fatfs_stream_cfg_t fatfs_wd_cfg = FATFS_STREAM_CFG_DEFAULT();
     fatfs_wd_cfg.type = AUDIO_STREAM_WRITER;
+    fatfs_wd_cfg.task_prio = 5;
+    fatfs_wd_cfg.task_core = 1;
     audio_element_handle_t fatfs_stream_writer = fatfs_stream_init(&fatfs_wd_cfg);
 
     ESP_LOGI(TAG, "[3.4] Register all elements to audio pipeline_rec");
@@ -203,11 +234,7 @@ void app_main()
     rsp_cfg_w.src_rate = 16000;
     rsp_cfg_w.src_ch = 1;
     rsp_cfg_w.dest_rate = I2S_SAMPLE_RATE;
-#if CONFIG_ESP_LYRAT_MINI_V1_1_BOARD || CONFIG_ESP32_S3_KORVO2L_V1_BOARD
-    rsp_cfg_w.dest_ch = 2;
-#else
-    rsp_cfg_w.dest_ch = 1;
-#endif
+    rsp_cfg_w.dest_ch = RSP_DEST_CHANNELS;
     rsp_cfg_w.complexity = 5;
     audio_element_handle_t filter_w = rsp_filter_init(&rsp_cfg_w);
     audio_element_set_write_cb(filter_w, i2s_write_cb, NULL);
@@ -248,7 +275,7 @@ void app_main()
     fat_info.sample_rates = I2S_SAMPLE_RATE;
     fat_info.bits = ALGORITHM_STREAM_DEFAULT_SAMPLE_BIT;
 #ifdef DEBUG_ALGO_INPUT
-    fat_info.channels = 2;
+    fat_info.channels = AEC_INPUT_CHANNEL;
 #else
     fat_info.channels = 1;
 #endif
