@@ -31,14 +31,44 @@ static const char *TAG = "AEC_EXAMPLE";
 
 /* Debug original input data for AEC feature*/
 // #define DEBUG_AEC_INPUT
+/* Enable dual mic config*/
+// #define ENABLE_DUAL_MIC  /* Only for ESP32-S3-KORVO2-V3 board */
 
-#define I2S_SAMPLE_RATE     8000
-#if CONFIG_ESP_LYRAT_MINI_V1_1_BOARD || CONFIG_ESP32_S3_KORVO2L_V1_BOARD
-#define I2S_CHANNELS        I2S_CHANNEL_FMT_RIGHT_LEFT
+#ifdef CONFIG_ESP32_S3_KORVO2_V3_BOARD
+#ifdef ENABLE_DUAL_MIC
+#define AEC_STREAM_CONFIG()  AEC_STREAM_CFG_SR_DUAL_MIC()
+#define AEC_INPUT_FORMAT     "RMNM"
+#define AEC_INPUT_CHANNEL    (4)
+#define RSP_DEST_CHANNELS    (2)
+#define I2S_SAMPLE_RATE      (16000)
+#define I2S_BITS             (32)
+#define I2S_CHANNELS         I2S_CHANNEL_FMT_RIGHT_LEFT
 #else
-#define I2S_CHANNELS        I2S_CHANNEL_FMT_ONLY_LEFT
-#endif
-#define I2S_BITS            CODEC_ADC_BITS_PER_SAMPLE
+#define AEC_STREAM_CONFIG()  AEC_STREAM_CFG_DEFAULT()
+#define AEC_INPUT_FORMAT     "RM"
+#define AEC_INPUT_CHANNEL    (2)
+#define RSP_DEST_CHANNELS    (1)  /* As the chip's CODEC_ADC_BITS_PER_SAMPLE is 32 bits (16 bits for mic + 16 bits for ref) */
+#define I2S_SAMPLE_RATE      (8000)
+#define I2S_BITS             (32)
+#define I2S_CHANNELS         I2S_CHANNEL_FMT_ONLY_LEFT
+#endif  /* ENABLE_DUAL_MIC */
+#elif CONFIG_ESP_LYRAT_MINI_V1_1_BOARD
+#define AEC_STREAM_CONFIG()  AEC_STREAM_CFG_DEFAULT()
+#define AEC_INPUT_FORMAT     "RM"
+#define AEC_INPUT_CHANNEL    (2)
+#define RSP_DEST_CHANNELS    (2)
+#define I2S_SAMPLE_RATE      (8000)
+#define I2S_BITS             (16)
+#define I2S_CHANNELS         I2S_CHANNEL_FMT_RIGHT_LEFT
+#else
+#define AEC_STREAM_CONFIG()  AEC_STREAM_CFG_DEFAULT()
+#define AEC_INPUT_FORMAT     "MR"
+#define AEC_INPUT_CHANNEL    (2)
+#define RSP_DEST_CHANNELS    (2)
+#define I2S_SAMPLE_RATE      (8000)
+#define I2S_BITS             CODEC_ADC_BITS_PER_SAMPLE
+#define I2S_CHANNELS         I2S_CHANNEL_FMT_RIGHT_LEFT
+#endif  /* CONFIG_ESP32_S3_KORVO2_V3_BOARD */
 
 extern const uint8_t adf_music_mp3_start[] asm("_binary_test_mp3_start");
 extern const uint8_t adf_music_mp3_end[]   asm("_binary_test_mp3_end");
@@ -105,6 +135,14 @@ void app_main()
     es7210_adc_set_gain(ES7210_INPUT_MIC3, GAIN_30DB);
 #elif CONFIG_ESP32_S3_KORVO2L_V1_BOARD
     es8311_set_mic_gain(ES8311_MIC_GAIN_24DB);
+#elif CONFIG_ESP_LYRAT_MINI_V1_1_BOARD
+    if (I2S_SAMPLE_RATE == 8000) {
+        ESP_LOGW(TAG, "When BCLK is used as the clock source on the ES8311 and the sample rate is set to 8 kHz,  \
+                 dedicated clock parameters must be configured within the ES8311.");
+        audio_hal_codec_config_t audio_codec_cfg = AUDIO_CODEC_DEFAULT_CONFIG();
+        audio_codec_cfg.i2s_iface.samples = AUDIO_HAL_08K_SAMPLES;
+        audio_hal_codec_iface_config(board_handle->audio_hal, AUDIO_HAL_CODEC_MODE_BOTH, &audio_codec_cfg.i2s_iface);
+    }
 #endif
     i2s_stream_cfg_t i2s_r_cfg = I2S_STREAM_CFG_DEFAULT_WITH_PARA(CODEC_ADC_I2S_PORT, I2S_SAMPLE_RATE, I2S_BITS, AUDIO_STREAM_READER);
     i2s_r_cfg.task_stack = -1;
@@ -117,15 +155,12 @@ void app_main()
     mem_assert(pipeline_rec);
     
     ESP_LOGI(TAG, "[3.1] Create algorithm stream for aec");
-    aec_stream_cfg_t aec_config = AEC_STREAM_CFG_DEFAULT();
+    aec_stream_cfg_t aec_config = AEC_STREAM_CONFIG();
+    aec_config.input_format = AEC_INPUT_FORMAT;
 #ifdef DEBUG_AEC_INPUT
     aec_config.debug_aec = true;
 #endif // DEBUG_AEC_INPUT
-#if CONFIG_ESP_LYRAT_MINI_V1_1_BOARD || CONFIG_ESP32_S3_KORVO2_V3_BOARD
-    aec_config.input_format = "RM";
-#else
-    aec_config.input_format = "MR";
-#endif
+
     audio_element_handle_t element_aec = aec_stream_init(&aec_config);
     mem_assert(element_aec);
     audio_element_set_read_cb(element_aec, i2s_read_cb, NULL);
@@ -170,11 +205,7 @@ void app_main()
     rsp_cfg_w.src_rate = 16000;
     rsp_cfg_w.src_ch = 1;
     rsp_cfg_w.dest_rate = I2S_SAMPLE_RATE;
-#if CONFIG_ESP_LYRAT_MINI_V1_1_BOARD || CONFIG_ESP32_S3_KORVO2L_V1_BOARD
-    rsp_cfg_w.dest_ch = 2;
-#else
-    rsp_cfg_w.dest_ch = 1;
-#endif
+    rsp_cfg_w.dest_ch = RSP_DEST_CHANNELS;
     rsp_cfg_w.complexity = 5;
     audio_element_handle_t filter_w = rsp_filter_init(&rsp_cfg_w);
     audio_element_set_write_cb(filter_w, i2s_write_cb, NULL);
@@ -205,7 +236,7 @@ void app_main()
     fat_info.sample_rates = I2S_SAMPLE_RATE;
     fat_info.bits = 16;
 #ifdef DEBUG_AEC_INPUT
-    fat_info.channels = 2;
+    fat_info.channels = AEC_INPUT_CHANNEL;
 #else
     fat_info.channels = 1;
 #endif

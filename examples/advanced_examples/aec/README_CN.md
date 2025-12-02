@@ -22,6 +22,10 @@
    [codec_chip] ---> i2s_stream ---> filter ---> AEC ---> wav_encoder ---> fatfs_stream ---> [sdcard]
    ```
 
+## 注意
+
+仅 ESP32_S3_KORVO2_V3_BOARD 支持 AFE_TYPE_SR 双麦配置，该配置主要用于唤醒（AEC 效果明显弱于 AFE_TYPE_VC）。
+
 ## 环境配置
 
 ### 硬件要求
@@ -201,6 +205,8 @@ I (1885) AEC_EXAMPLES: [ * ] Receive music info from mp3 decoder, sample_rates=1
 - 如果 AEC 效果不是很好，你可以打开 `DEBUG_ALGO_INPUT` define，就可以获取到原始的输入数据（左声道是从麦克风获取到的信号，右声道是扬声器端获取到的信号），并使用音频分析工具查看麦克风信号和扬声器信号之间的延迟。
 
 - AEC 内部缓冲机制要求录制信号相对于相应的参考（回放）信号延迟 0 - 10 ms 左右。
+
+- 如果发现 aec_in.wav/aec_out.wav 存在丢数据的情况，请更换高速 SD 卡再进行调试。
 
 ## 技术支持
 请按照下面的链接获取技术支持：

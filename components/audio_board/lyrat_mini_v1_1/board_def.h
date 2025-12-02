@@ -62,7 +62,7 @@
 /**
  * @brief ADC input data format
  */
-#define AUDIO_ADC_INPUT_CH_FORMAT "RMNM"
+#define AUDIO_ADC_INPUT_CH_FORMAT "RM"
 
 extern audio_hal_func_t AUDIO_CODEC_ES8311_DEFAULT_HANDLE;
 extern audio_hal_func_t AUDIO_CODEC_ES7243E_DEFAULT_HANDLE;

@@ -45,6 +45,18 @@
     .input_format  = "RM",                        \
 }
 
+#define AEC_STREAM_CFG_SR_DUAL_MIC() {            \
+    .task_stack    = AEC_STREAM_TASK_STACK_SIZE,  \
+    .task_prio     = AEC_STREAM_TASK_PERIOD,      \
+    .task_core     = AEC_STREAM_PINNED_TO_CORE,   \
+    .debug_aec     = false,                       \
+    .stack_in_ext  = true,                        \
+    .type          = AFE_TYPE_SR,                 \
+    .mode          = AFE_MODE_HIGH_PERF,          \
+    .filter_length = 4,                           \
+    .input_format  = "RMNM",                      \
+}
+
 typedef struct {
     int        task_stack;     /*!< Task stack size */
     int        task_prio;      /*!< Task peroid */

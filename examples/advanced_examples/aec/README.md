@@ -22,6 +22,10 @@ This AEC example consists of two pipelines: one for playing an MP3 file from fla
   [codec_chip] ---> i2s_stream ---> filter ---> AEC ---> wav_encoder ---> fatfs_stream ---> [sdcard]
   ```
 
+## Notes
+
+Only ESP32_S3_KORVO2_V3_BOARD supports AFE_TYPE_SR dual-mic configuration, which is primarily used for wake-up (AEC performance is significantly weaker than AFE_TYPE_VC).
+
 ## Environment Setup
 
 #### Hardware Required
@@ -204,6 +208,8 @@ I (1885) AEC_EXAMPLES: [ * ] Receive music info from mp3 decoder, sample_rates=1
 - If the AEC effect is not very good, you can open the `DEBUG_ALGO_INPUT` define to get the original input data (left channel is the signal captured from the microphone, and right channel is the signal played to the speaker), and then check the delay with an audio analysis tool.
 
 - The AEC internal buffering mechanism requires that the recording signal is delayed by around 0 - 10 ms compared to the corresponding reference (playback) signal.
+
+- If data loss is observed in aec_in.wav/aec_out.wav, replace the SD card with a high-speed one before continuing debugging.
 
 ## Technical support and feedback
 
