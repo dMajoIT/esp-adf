@@ -23,6 +23,7 @@ variables:
   CI_TARGET_TEST_CONFIG_FILE: "$CI_PROJECT_DIR/.gitlab/ci/target-test.yml"
   IDF_SKIP_CHECK_SUBMODULES: 1
   GIT_DEPTH: 1
+  ESP_DOCS_ENV_IMAGE: "$CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.4:1-1"
 
 .execute_submodules: &execute_submodules |
   if [[ "$DEEP_CLONE" == "true" ]]; then

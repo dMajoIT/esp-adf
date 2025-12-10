@@ -5,7 +5,7 @@ ESP32-LyraTD-MSC V2.2 入门指南
 
 本指南旨在向用户介绍 ESP32-LyraTD-MSC V2.2 音频开发板的功能、配置选项以及如何快速入门。
 
-ESP32-LyraTD-MSC 是一款面向智能音箱和 AI 应用程序的硬件平台，支持声学回声消除 (Acoustic Echo Cancelation, AEC)、 自动语音识别 (Automatic Speech Recognition, ASR)、打断唤醒 (Wake-up Interrupt) 以及语音互动 (Voice Interaction) 功能。
+ESP32-LyraTD-MSC 是一款面向智能音箱和 AI 应用程序的硬件平台，支持声学回声消除 (Acoustic Echo Cancellation, AEC)、 自动语音识别 (Automatic Speech Recognition, ASR)、打断唤醒 (Wake-up Interrupt) 以及语音互动 (Voice Interaction) 功能。
 
 准备工作
 -------------
@@ -21,7 +21,7 @@ ESP32-LyraTD-MSC 是一款面向智能音箱和 AI 应用程序的硬件平台�
 概述
 ^^^^^^^^
 
-ESP32-LyraTD-MSC V2.2 是一款基于 `乐鑫 <https://espressif.com>`_ ESP32 芯片的音频开发板，专为智能音箱和 AI 应用程序打造， 除 ESP32 芯片原有的硬件外，还增添了数字信号处理、麦克风阵列以及扩展 RAM。 
+ESP32-LyraTD-MSC V2.2 是一款基于 `乐鑫 <https://espressif.com>`_ ESP32 芯片的音频开发板，专为智能音箱和 AI 应用程序打造， 除 ESP32 芯片原有的硬件外，还增添了数字信号处理、麦克风阵列以及扩展 RAM。
 
 ESP32-LyraTD-MSC V2.2 由上板和下板两部分组成，上板 (B) 集成三麦克风阵列、功能按键和 LED 灯，下板 (A) 集成 ESP32-WROVER-E 模组、MicroSemi Digital Signal Processing (DSP) 芯片以及电源管理模块。
 
