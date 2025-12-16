@@ -25,7 +25,7 @@ Fundamental Principles and Implementation of FOURCC
 1. Core Mechanism of FOURCC
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-FOURCC is a compact encoding scheme based on ASCII characters. The core principle is to generate a **32-bit unsigned integer** (`uint32_t`) from **four consecutive characters**. For example, the string `"H264"` corresponds to the hexadecimal value `0x48323634`, where each character’s ASCII code is combined in sequence:
+FOURCC is a compact encoding scheme based on ASCII characters. The core principle is to generate a **32-bit unsigned integer** (`uint32_t`) from **four consecutive characters**. For example, the string `"H264"` corresponds to the hexadecimal value `0x34363248`, where each character’s ASCII code is combined in sequence:
 
 - `'H'` → `0x48`
 - `'2'` → `0x32`
@@ -43,7 +43,7 @@ In ESP-GMF, FOURCC definitions are primarily found in the `esp_fourcc.h <https:/
 
    .. code:: c
 
-      #define ESP_FOURCC_H264   ESP_FOURCC_TO_INT('H','2','6','4') // 0x48323634
+      #define ESP_FOURCC_H264   ESP_FOURCC_TO_INT('H','2','6','4') // 0x34363248
 
 -  **Helper Functions**
 
@@ -51,7 +51,7 @@ In ESP-GMF, FOURCC definitions are primarily found in the `esp_fourcc.h <https:/
 
    .. code:: c
 
-      printf("Format: %s\n", ESP_FOURCC_TO_STR(0x48323634)); // "H264"
+      printf("Format: %s\n", ESP_FOURCC_TO_STR(0x34363248)); // "H264"
 
 -  **FOURCC Definitions**
 

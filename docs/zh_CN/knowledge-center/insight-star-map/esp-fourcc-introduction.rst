@@ -25,7 +25,7 @@ FOURCC 的基本原理与实现
 1. FOURCC 的核心机制
 ~~~~~~~~~~~~~~~~~~~~~
 
-FOURCC 是一种基于 ASCII 字符的紧凑编码方案，其核心原理是将 **连续四个字符** 转换为一个 **32 位无符号整数** （`uint32_t`）。例如字符串 `"H264"` 对应的十六进制值为 `0x48323634`，各字符的 ASCII 值依次组合如下：
+FOURCC 是一种基于 ASCII 字符的紧凑编码方案，其核心原理是将 **连续四个字符** 转换为一个 **32 位无符号整数** （`uint32_t`）。例如字符串 `"H264"` 对应的十六进制值为 `0x34363248`，各字符的 ASCII 值依次组合如下：
 
 - `'H'` → `0x48`
 - `'2'` → `0x32`
@@ -43,7 +43,7 @@ FOURCC 是一种基于 ASCII 字符的紧凑编码方案，其核心原理是将
 
   .. code:: c
 
-     #define ESP_FOURCC_H264   ESP_FOURCC_TO_INT('H','2','6','4') // 0x48323634
+     #define ESP_FOURCC_H264   ESP_FOURCC_TO_INT('H','2','6','4') // 0x34363248
 
 - **辅助函数**
 
@@ -51,7 +51,7 @@ FOURCC 是一种基于 ASCII 字符的紧凑编码方案，其核心原理是将
 
   .. code:: c
 
-     printf("Format: %s\n", ESP_FOURCC_TO_STR(0x48323634)); // "H264"
+     printf("Format: %s\n", ESP_FOURCC_TO_STR(0x34363248)); // "H264"
 
 - **FOURCC 类型定义**
 
