@@ -76,9 +76,9 @@ ESP32-Korvo-DU1906 的主要组件和连接方式如下图所示。
    :widths: 30 70
    :header-rows: 1
 
-   * - Key Componenet
+   * - Key Component
      - Description
-   * - ESP32-DU1906 
+   * - ESP32-DU1906
      - ESP32-DU1906 模组是一款功能强大的通用型 Wi-Fi/蓝牙音频通信模组，适用范围广泛，主要面向低功耗传感器网络和语音编码/解码、音乐流及智能语音助手客户端等一系列要求较高的应用场景。
    * - SPI LCD 连接器
      - ESP32-Korvo-DU1906 上有一个 2.54 mm 间距的连接器用来连接 SPI LCD。
@@ -98,7 +98,7 @@ ESP32-Korvo-DU1906 的主要组件和连接方式如下图所示。
      - 恒流/恒压线性电源管理芯片 AP5056 可以用于单节锂离子电池的充电管理。
    * - 电源开关 (PWR Slide Switch)
      - 开发板电源开关，turn on 为开启供电，turn off 为关闭供电。
-   * - USB-UART 转换器 (USB to UART)    
+   * - USB-UART 转换器 (USB to UART)
      - CP2102N 支持 USB 到 UART 的转换，方便软件下载与调试。
    * - Micro-USB 调试接口 (DBG USB)
      - 通用 USB 通信端口，用于 PC 端与 ESP32-DU1906 模组的通信。
@@ -107,19 +107,19 @@ ESP32-Korvo-DU1906 的主要组件和连接方式如下图所示。
    * - 充电指示 LED
      - 指示电池的状态。电池连接后，BAT_CHRG 指示灯亮红灯（表示正在充电），BAT_STBY 指示灯亮绿灯（表示电量已充满）。若未连接电池，默认 BAT_CHRG（红色），BAT_STBY（绿色）。
    * - 电源指示 LED
-     - 指示供电状态。上电后，两个指示灯 (SYS_3V3, SYS_5) 都亮红灯。      
+     - 指示供电状态。上电后，两个指示灯 (SYS_3V3, SYS_5) 都亮红灯。
    * - 按键 (Buttons)
      - ESP32-Korvo-DU1906 上有 4 个功能按键、1 个重启按键和 1 个 Boot 选择按键。
    * - TF 卡连接器 (SD Card Slot)
      - 用于连接标准 TF 卡。
-   * - 调试接口 (ESP_I2C Connector/DSP_I2C Connnector)
-     - 开发板预留了两组 I2C 调试接口，分别为 ESP_I2C Connector and DSP_I2C Connnector，以供用户调试代码。
+   * - 调试接口 (ESP_I2C Connector/DSP_I2C Connector)
+     - 开发板预留了两组 I2C 调试接口，分别为 ESP_I2C Connector and DSP_I2C Connector，以供用户调试代码。
    * - 麦克阵列 (Mic)
-     - ESP32-Korvo-DU1906 上有三个板载数字麦克风。三个麦克风的拾音孔呈正三角分布并且相互之间的距离 60 mm。麦克风阵列配合 DSP 可以实现降低噪声、回声消除，并且实现波束形成与检测功能。     
+     - ESP32-Korvo-DU1906 上有三个板载数字麦克风。三个麦克风的拾音孔呈正三角分布并且相互之间的距离 60 mm。麦克风阵列配合 DSP 可以实现降低噪声、回声消除，并且实现波束形成与检测功能。
    * - 红外发射/接收器 (IR TX/RX)
      - ESP32-Korvo-DU1906 上有红外发射和接收器各一个，可以配合 ESP32 的红外遥控器使用。
    * - FPC 连接器 (FPC Connector for Mic)
-     - ESP32-Korvo-DU1906 上有两个 FPC 连接器分别用来连接 SPI LCD 显示屏和外部麦克风阵列。         
+     - ESP32-Korvo-DU1906 上有两个 FPC 连接器分别用来连接 SPI LCD 显示屏和外部麦克风阵列。
    * - RGB LED
      - ESP32-Korvo-DU1906 上有两个 RGB LED 可供用户配置用来做状态行为指示。
    * - 麦克阵列拨码开关 (Slide Switch for Mic)

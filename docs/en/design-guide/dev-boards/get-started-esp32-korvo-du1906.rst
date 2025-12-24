@@ -3,7 +3,7 @@ ESP32-Korvo-DU1906
 ===================
 :link_to_translation:`zh_CN:[中文]`
 
-This user guide provides information on ESP32-Korvo-DU1906. 
+This user guide provides information on ESP32-Korvo-DU1906.
 
 
 .. figure:: ../../../_static/esp32-korvo-du1906-v1.1.png
@@ -18,7 +18,7 @@ The document consists of the following major sections:
 
 - `Getting Started`_: Provides an overview of the ESP32-Korvo-DU1906 and hardware/software setup instructions to get started.
 - `Start Application Development`_: Provides more detailed information about the ESP32-Korvo-DU1906's application development process.
-- `Related Documents`_: Gives links to related documentaiton.
+- `Related Documents`_: Gives links to related documentation.
 
 
 Getting Started
@@ -79,7 +79,7 @@ The following list and figure describe key components, interfaces and controls o
    :widths: 30 70
    :header-rows: 1
 
-   * - Key Componenet
+   * - Key Component
      - Description
    * - ESP32-DU1906
      - This is a powerful, general-purpose, Wi-Fi/Bluetooth audio communication module, targeting a wide variety of applications ranging from low-power sensor networks to the most demanding tasks, such as voice encoding/decoding, music streaming and running voice assistant client SDK.
@@ -94,7 +94,7 @@ The following list and figure describe key components, interfaces and controls o
    * - Audio DAC (Audio Digital-to-Analog Converter)
      - ES7148 Stereo DAC is able to convert digital signals into analog audio outputs.
    * - Audio PA (Digital Audio Power Amplifier)
-     - TAS5805M is a high-efficiency stereo closed-loop D-type amplifier with low power dissipation and rich sound. It can convert audio digital signals into high-power analog audio outputs and transmit them to external speakers for playback. When the Line-out earphone jack of the audio DAC plugged into the device, the Digital Audio PA on the ESP32-Korvo-DU1906 will be turned off. 
+     - TAS5805M is a high-efficiency stereo closed-loop D-type amplifier with low power dissipation and rich sound. It can convert audio digital signals into high-power analog audio outputs and transmit them to external speakers for playback. When the Line-out earphone jack of the audio DAC plugged into the device, the Digital Audio PA on the ESP32-Korvo-DU1906 will be turned off.
    * - Battery Connector
      - Connect a battery.
    * - Battery Charger
@@ -114,15 +114,15 @@ The following list and figure describe key components, interfaces and controls o
    * - Buttons
      - ESP32-Korvo-DU1906 has four functional buttons, one Reset button and one Boot button.
    * - SD Card Slot
-     - Connect a standard TF card. 
-   * - ESP_I2C Connector/DSP_I2C Connnector
+     - Connect a standard TF card.
+   * - ESP_I2C Connector/DSP_I2C Connector
      - Two sets of reserved I2C debugging interfaces for users to debug.
    * - Mic
      - ESP32-Korvo-DU1906 has three on-board digital microphones. The pickup holes of the three microphones are distributed in equilateral pyramid shape with distances of 60 mm in between. Together with DSP, the Microphone Array is able to realize noise reduction, AEC, beam formation and detection.
    * - IR TX/RX (Infrared Transmitter/Receiver)
      - ESP32-Korvo-DU1906 has one infrared transmitter and one infrared receiver, which can be used together with the remote control module of ESP32.
    * - FPC Connector for Mic
-     - ESP32-Korvo-DU1906 has two FPC connectors to connect the SPI LCD screen and external microphone arrays.    
+     - ESP32-Korvo-DU1906 has two FPC connectors to connect the SPI LCD screen and external microphone arrays.
    * - RGB LED
      - ESP32-Korvo-DU1906 has two RGB LEDs for users that can be configured as status behavior indicator.
    * - Slide Switch for Mic
@@ -160,7 +160,7 @@ Once the board is initially set up and checked, you can start preparing the deve
 * **Build the Project** to finally run the application and play some music.
 
 
-Other Related Boards 
+Other Related Boards
 ---------------------
 
 * :doc:`get-started-esp32-lyrat`

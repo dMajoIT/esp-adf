@@ -8,9 +8,9 @@ This section describes capacity and performance of ESP32 system resources that s
 Memory
 ======
 
-The spare internal Data-RAM is about 290kB with "hello_world" example. For audio system this may be insufficient, and therefore the ESP32 incorporates the ability to use up to 4MB of external SPI RAM (i.e. PSRAM) memory. The external memory is incorporated in the memory map and is, within certain restrictions, usable in the same way internal Data-RAM is.  
+The spare internal Data-RAM is about 290kB with "hello_world" example. For audio system this may be insufficient, and therefore the ESP32 incorporates the ability to use up to 4MB of external SPI RAM (i.e. PSRAM) memory. The external memory is incorporated in the memory map and is, within certain restrictions, usable in the same way internal Data-RAM is.
 
-Refer to `External SPI-connected RAM <http://esp-idf.readthedocs.io/en/latest/api-guides/external-ram.html>`_ section in IDF documenation for details, especially pay attention to its `Restrictions <https://esp-idf.readthedocs.io/en/latest/api-guides/external-ram.html#restrictions>`_ section which is very important.
+Refer to `External SPI-connected RAM <http://esp-idf.readthedocs.io/en/latest/api-guides/external-ram.html>`_ section in IDF documentation for details, especially pay attention to its `Restrictions <https://esp-idf.readthedocs.io/en/latest/api-guides/external-ram.html#restrictions>`_ section which is very important.
 
 To be able to use the PSRAM, if installed on your board, it should be enabled in menucofig under *Component config > ESP32-specific > SPI RAM config*. The option *CONFIG_SPIRAM_CACHE_WORKAROUND*, set by default in the same menu, should be kept enabled.
 
@@ -36,7 +36,7 @@ Internal RAM is more valuable asset since there are some restrictions on PSRAM. 
 
     The smaller the size of sector be, the slower the Write / Read speed will be, and vice versa, but only 512 and 4096 are supported.
 
-* Call ``char *buf = heap_caps_malloc(1024 * 10, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT)`` instead of ``malloc(1024 * 10)`` to use PSRAM, and call ``char *buf = heap_caps_malloc(512, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT)`` to use internal RAM.  
+* Call ``char *buf = heap_caps_malloc(1024 * 10, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT)`` instead of ``malloc(1024 * 10)`` to use PSRAM, and call ``char *buf = heap_caps_malloc(512, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT)`` to use internal RAM.
 
 * Not relying on ``malloc()`` to automatically allocate PSRAM allows to make a full control of the memory. By avoiding the use of the internal RAM by other ``malloc()`` calls, you can reserve more memory for high-efficiency usage and task stack since PSRAM cannot be used as task stack memory.
 
@@ -95,7 +95,7 @@ The following settings are recommended to achieve a high Wi-Fi performance in an
     * Flash SPI mode as QIO
     * Flash SPI speed as 80MHz
     * CPU frequency as 240MHz
-    * Set *Default receive window size* as 5 times greater than *Maximum Segment Size* in *Component config > LWIP > TCP* 
+    * Set *Default receive window size* as 5 times greater than *Maximum Segment Size* in *Component config > LWIP > TCP*
 
 * If external antenna is used, then set *PHY_RF_CAL_PARTIAL* as *PHY_RF_CAL_FULL* in ''esp-idf/components/esp32/phy_init.c''
 
