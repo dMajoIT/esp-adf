@@ -2,7 +2,11 @@
 
 [![Documentation Status](./docs/_static/doc_latest.svg)](https://docs.espressif.com/projects/esp-adf/en/latest/?badge=latest)
 
-Espressif Systems Advanced Development Framework (ESP-ADF) is the official Advanced Development Framework for the [ESP32](https://espressif.com/en/products/hardware/esp32/overview), [ESP32-S2](https://www.espressif.com/en/products/socs/esp32-s2), [ESP32-C3](https://www.espressif.com/en/products/socs/esp32-c3), [ESP32-C6](https://www.espressif.com/en/products/socs/esp32-c6), [ESP32-S3](https://www.espressif.com/en/products/socs/esp32-s3), and [ESP32-P4](https://www.espressif.com/en/products/socs/esp32-p4) SoCs.
+Espressif Systems Advanced Development Framework (ESP-ADF) is the official Advanced Development Framework for the [ESP32](https://espressif.com/en/products/hardware/esp32/overview), [ESP32-S2](https://www.espressif.com/en/products/socs/esp32-s2), [ESP32-C3](https://www.espressif.com/en/products/socs/esp32-c3), [ESP32-C6](https://www.espressif.com/en/products/socs/esp32-c6), [ESP32-C5](https://www.espressif.com/en/products/socs/esp32-c5), [ESP32-S3](https://www.espressif.com/en/products/socs/esp32-s3), and [ESP32-P4](https://www.espressif.com/en/products/socs/esp32-p4) SoCs.
+
+## ⚠️ Important
+
+ESP-ADF v2.8 and later versions only receive updates on the [`release/v2.x`](https://github.com/espressif/esp-adf/tree/release/v2.x) branch. The `master` branch is **not compatible** with the `release/v2.x` branch anymore.
 
 ## Overview
 
@@ -32,11 +36,8 @@ End of Life IDF branches are removed. See [IDF Supported Periods](https://docs.e
 
 |                      | ESP-IDF <br> [Release/v5.1](https://docs.espressif.com/projects/esp-idf/zh_CN/release-v5.1/esp32/versions.html) |  ESP-IDF <br> [Release/v5.2](https://docs.espressif.com/projects/esp-idf/zh_CN/release-v5.2/esp32/versions.html) |  ESP-IDF <br> [Release/v5.3](https://docs.espressif.com/projects/esp-idf/zh_CN/release-v5.3/esp32/versions.html) | ESP-IDF <br> [Release/v5.4](https://docs.espressif.com/projects/esp-idf/zh_CN/release-v5.4/esp32/versions.html) | ESP-IDF <br> [Release/v5.5](https://docs.espressif.com/projects/esp-idf/zh_CN/release-v5.5/esp32/versions.html) | ESP-IDF <br> [Master](https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/versions.html) |
 |:----------- |:---------------------: | :---------------------:| :---------------------:| :---------------------:| :---------------------:| :---------------------:|
-| ESP-ADF <br> Master | ![alt text](docs/_static/yes-checkm.png "supported") | ![alt text](docs/_static/yes-checkm.png "supported") | ![alt text](docs/_static/yes-checkm.png "supported") | ![alt text](docs/_static/yes-checkm.png "supported") | ![alt text](docs/_static/yes-checkm.png "supported") |![alt text](docs/_static/no-icon.png "not supported") |
+| ESP-ADF <br> Release/v2.8  | ![alt text](docs/_static/yes-checkm.png "supported") | ![alt text](docs/_static/yes-checkm.png "supported") | ![alt text](docs/_static/yes-checkm.png "supported") | ![alt text](docs/_static/yes-checkm.png "supported") | ![alt text](docs/_static/yes-checkm.png "supported") |  ![alt text](docs/_static/no-icon.png "not supported") |
 | ESP-ADF <br> Release/v2.7  | ![alt text](docs/_static/yes-checkm.png "supported") | ![alt text](docs/_static/yes-checkm.png "supported") | ![alt text](docs/_static/yes-checkm.png "supported") | ![alt text](docs/_static/no-icon.png "not supported") | ![alt text](docs/_static/no-icon.png "not supported") |  ![alt text](docs/_static/no-icon.png "not supported") |
-| ESP-ADF <br> Release/v2.6  | ![alt text](docs/_static/yes-checkm.png "supported") |![alt text](docs/_static/no-icon.png "not supported") | ![alt text](docs/_static/no-icon.png "not supported") | ![alt text](docs/_static/no-icon.png "not supported") | ![alt text](docs/_static/no-icon.png "not supported") | ![alt text](docs/_static/no-icon.png "not supported") |
-
-
 
 ### Quick Start
 
@@ -55,9 +56,8 @@ It is recommended to use the ESP-ADF master branch, as it has the latest bugfixe
 |                       | [ESP32-LyraT-Mini](https://docs.espressif.com/projects/esp-adf/en/latest/design-guide/dev-boards/get-started-esp32-lyrat-mini.html) |[ESP32-S3-Korvo-2](https://docs.espressif.com/projects/esp-adf/en/latest/design-guide/dev-boards/user-guide-esp32-s3-korvo-2.html)|[ESP32-C3-Lyra](https://docs.espressif.com/projects/esp-adf/en/latest/design-guide/dev-boards/user-guide-esp32-c3-lyra.html)| [ESP32-S3-Box Series](https://github.com/espressif/esp-box/tree/master)| [ESP32-P4-Function-EV-Board](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32p4/esp32-p4-function-ev-board/index.html)|
 |:----------- | :---------------------:| :---------------------:| :---------------------:| :---------------------:| :---------------------:|
 |  |  [<img src="docs/_static/esp32-lyrat-mini-v1.2.png" width="110" alt ="ESP32-LyraT-Mini Development Board" align="center" />](https://docs.espressif.com/projects/esp-adf/en/latest/get-started/get-started-esp32-lyrat-mini.html)  |  [<img src="docs/_static/esp32-s3-korvo-2-v3.0-overview.png" width="120" alt ="ESP32-S3-Korvo-2 Development Board" align="center" />](https://docs.espressif.com/projects/esp-adf/en/latest/get-started/user-guide-esp32-s3-korvo-2.html)  |  [<img src="docs/_static/esp32-c3-lyra-v2.0-small.png" width="120" alt ="ESP32-C3-Lyra Development Board" align="center" />](https://docs.espressif.com/projects/esp-adf/en/latest/design-guide/dev-boards/user-guide-esp32-c3-lyra.html) |  [<img src="docs/_static/esp32_s3_box_3.jpg" width="100" alt ="ESP32-S3-Box Development Board" align="center" />](https://github.com/espressif/esp-box/tree/master) | [<img src="docs/_static/esp32-p4-function-ev-board.jpg" width="100" alt ="" align="center" />](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32p4/esp32-p4-function-ev-board/index.html) |
-| ESP-ADF Master        | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) <sup> **1** </sup> | ![alt text](docs/_static/yes-checkm.png) |
+| ESP-ADF Release/v2.8      | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) <sup> **1** </sup> | ![alt text](docs/_static/yes-checkm.png) |
 | ESP-ADF Release/v2.7  | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) <sup> **1** </sup> | ![alt text](docs/_static/yes-checkm.png) |
-| ESP-ADF Release/v2.6  | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) | ![alt text](docs/_static/yes-checkm.png) <sup> **1** </sup> | ![alt text](docs/_static/no-icon.png) |
 
 **Note 1:** For the development board of [esp-box series](https://github.com/espressif/esp-box), only [esp32-s3-box](https://github.com/espressif/esp-box/blob/master/docs/hardware_overview/esp32_s3_box/hardware_overview_for_box.md) and [esp32-s3-box-lite](https://github.com/espressif/esp-box/blob/master/docs/hardware_overview/esp32_s3_box_lite/hardware_overview_for_lite.md) are supported in *ESP-ADF*.
 
@@ -69,8 +69,6 @@ The following boards have reached their **end of life**.
 
 [supported]: https://img.shields.io/badge/-supported-green "supported"
 [not supported]: https://img.shields.io/badge/-not%20supported-orange "not supported"
-
-
 
 #### Examples
 
