@@ -91,7 +91,7 @@ static esp_err_t cli_play_mixer(esp_periph_handle_t periph, int argc, char *argv
     }
     int slot = atoi(argv[1]);
     if (slot <= 0 || slot > IN_SOURCE_FILE_NUM) {
-        ESP_LOGE(TAG, "Slot must be in [1, %d], beacuse slot 0 occupied by record", IN_SOURCE_FILE_NUM - 1);
+        ESP_LOGE(TAG, "Slot must be in [1, %d], because slot 0 occupied by record", IN_SOURCE_FILE_NUM - 1);
         return ESP_FAIL;
     }
     if (mixer_pipes[slot].used == 1) {
@@ -176,7 +176,7 @@ static esp_err_t cli_mixer_gain_set(esp_periph_handle_t periph, int argc, char *
         audio_mixer_set_gain(mixer, slot, DEFAULT_SOURCE_GAIN_DB, dst_gain);
         return ESP_OK;
     }
-    ESP_LOGE(TAG, "Invlaid gain destition parameter");
+    ESP_LOGE(TAG, "Invalid gain destition parameter");
     return ESP_FAIL;
 }
 
@@ -301,7 +301,7 @@ static esp_err_t cli_play(esp_periph_handle_t periph, int argc, char *argv[])
     char *url = argv[0];
     audio_player_slot = atoi(argv[1]);
     if (audio_player_slot <= 0 || audio_player_slot > IN_SOURCE_FILE_NUM) {
-        ESP_LOGE(TAG, "Slot must be in [1, %d], beacuse slot 0 occupied by record", IN_SOURCE_FILE_NUM - 1);
+        ESP_LOGE(TAG, "Slot must be in [1, %d], because slot 0 occupied by record", IN_SOURCE_FILE_NUM - 1);
         return ESP_ERR_INVALID_ARG;
     }
     mixer_pipes[audio_player_slot].used = true;
@@ -319,9 +319,9 @@ static esp_err_t cli_play(esp_periph_handle_t periph, int argc, char *argv[])
 }
 
 const periph_console_cmd_t cli_cmd[] = {
-    /* ======================== Mixer Pipiline ======================== */
+    /* ======================== Mixer Pipeline ======================== */
     { .cmd = "play",    .id = 1, .help = "Play music, cmd:\"play [url] [slot] [byte_pos]\",\n\
-        \te.g. 1.\"play url slot\"; 2. play with ipostion,\"play url slot postition\"\n\tNote: The '#raw' suffix need to be add to the actual backend mahine after the URL\n"
+        \te.g. 1.\"play url slot\"; 2. play with ipostion,\"play url slot position\"\n\tNote: The '#raw' suffix need to be add to the actual backend mahine after the URL\n"
         "\t\t play file://sdcard/test.mp3#raw 1\n\t\t play file://sdcard/test.mp3#raw 1 20\n",               .func = cli_play
     },
     { .cmd = "stop",    .id = 2,  .help = "Stop player",                                                 .func = cli_stop },
@@ -369,7 +369,7 @@ static esp_err_t play_read_callback(uint8_t *data, int len, void *ctx)
     return raw_stream_read(raw_writer_h, (char *)data, len);
 }
 
-static void aduio_play_read_task(void *pv)
+static void audio_play_read_task(void *pv)
 {
     char *buffer = audio_calloc(1, 2048);
     assert(buffer);
@@ -467,7 +467,7 @@ static void cli_setup_player(void)
 
     audio_event_group = xEventGroupCreate();
     assert(audio_event_group);
-    xTaskCreate(aduio_play_read_task, "aduio_play_read_task", 4096, NULL, 5, NULL);
+    xTaskCreate(audio_play_read_task, "audio_play_read_task", 4096, NULL, 5, NULL);
 }
 
 static void cli_setup_console()
